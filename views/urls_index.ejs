@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><strong>TinyApp</strong></title>
+</head>
+<body>
+  <ul>
+   <% for (var shortUrl in urls) { %>
+    <li><%= shortUrl + urls[shortUrl] %></li>
+        <%}%>
+
+  </ul>
+
+</body>
+</html>
