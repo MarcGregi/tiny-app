@@ -14,6 +14,14 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
+
+app.post("/urls", (req, res) => {
+  console.log(req.body);  // debug statement to see POST parameters
+  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+});
+
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
@@ -32,12 +40,10 @@ app.get("/urls.json", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { shortUrl: req.params.id, longUrl: urlDatabase[req.params.id] };
+  let templateVars = { shorterUrl: req.params.id, longerUrl: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
 });
 
-const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({extended: true}));
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
