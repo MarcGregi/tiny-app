@@ -33,11 +33,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.post("/urls", (req, res) => {
   let newShorterUrl = generateRandomString();
-  urlDatabase[newShorterUrl] = request.body.longURL;
-  let templateVars = { shortURL: newShorterUrl, longURL: urlDatabase[newShorterUrl]};
+  urlDatabase[newShorterUrl] = req.body.longURL;
+  res.redirect(`urls/${newShorterUrl}`);
 });
-
-response.render('urls-show', templateVars);
 
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase };
