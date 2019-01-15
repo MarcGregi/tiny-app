@@ -49,5 +49,15 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
+function generateRandomString() {
+let totalCharcters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let newString = '';
 
+  for (let i = 0; i <= 6; i ++){
+    newString += totalCharcters[Math.floor(Math.random() * totalCharcters.length)];
+  }
+  return (newString);
+}
+
+generateRandomString();
 
