@@ -33,6 +33,9 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
+const bodyParser = require("body-parser");
+app.use(bodyParser.urlencoded({extended: true}));
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
