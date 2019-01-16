@@ -12,12 +12,14 @@ let newString = '';
 generateRandomString();
 
 
-
 const express = require("express");
 const app = express();
+const cookieParser = require('cookie-parser');
 const PORT = 8080; // default port 8080
 
-app.set("view engine", "ejs")
+app.use(cookieParser());
+
+app.set("view engine", "ejs");
 
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -31,6 +33,7 @@ app.get("/urls/new", (req, res) => {
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
+
 app.post("/urls", (req, res) => {
   let newShorterUrl = generateRandomString();
   urlDatabase[newShorterUrl] = req.body.longURL;
@@ -42,7 +45,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-app.post('/urls/:id/delete', function (req, res) {
+app.post("/urls/:id/delete", function (req, res) {
   var shorterUrl = req.params.id;
   delete urlDatabase[shorterUrl];
   res.redirect('/urls');
@@ -69,6 +72,11 @@ app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id] = req.body.updatelongerUrl;
 });
 
+app.post("/login", function(req, res){
+  res.cookie("username", req.body.username);
+  res.redirect("/urls");
+
+});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
