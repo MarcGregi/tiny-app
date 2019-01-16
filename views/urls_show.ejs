@@ -10,11 +10,13 @@
       <% include ./partials/_header %>
     </header>
 
+    <h3>URL Result</h3>
+    <p><strong>Short Link-</strong><%= shorterUrl %></p>
+    <p><strong>Original Link-</strong><%= longerUrl %></p>
+    <form method="POST" action="/urls//delete">
+    <button type="submit">Delete second URL</button>
+    </form>
 
-  <% include ./partials/_header %>
-    <h3>Long & Short URL</h3>
-    <p><%= shorterUrl %></p>
-    <p><%= longerUrl %></p>
 
 
 

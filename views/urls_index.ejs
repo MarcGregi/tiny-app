@@ -10,14 +10,17 @@
       <% include ./partials/_header %>
     </header>
 
-
   <ul>
-    <% include ./partials/_header %>
+
    <% for (var shorterUrl in urls) { %>
     <li><%= shorterUrl + urls[shorterUrl] %></li>
+    <form method="POST" action="/urls/<%= shorterUrl%>/delete">
+    <button type="submit">Delete URL</button>
+    </form>
         <%}%>
-
   </ul>
 
+
+</form>
 </body>
 </html>
