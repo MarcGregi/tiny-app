@@ -10,12 +10,18 @@
       <% include ./partials/_header %>
     </header>
 
-    <h3>URL Result</h3>
-    <p><strong>Short Link-</strong><%= shorterUrl %></p>
-    <p><strong>Original Link-</strong><%= longerUrl %></p>
-    <form method="POST" action="/urls//delete">
-    <button type="submit">Delete second URL</button>
-    </form>
+    <h1 style="color:blue;text-align:center">Grab Your Short Link Here:</h1>
+    <p><strong>Short Url-></strong><%= shorterUrl %></p>
+
+
+<form method="POST" action="/urls/<%= shorterUrl %>">
+  <fieldset>
+    <legend>Update Url:</legend>
+    <br>
+    <input type="text" name="updatelongerUrl" value="<%= longerUrl %>"><br><br>
+    <button type="submit">Update</button>
+  </fieldset>
+</form>
 
 
 
