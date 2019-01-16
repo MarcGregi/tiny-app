@@ -27,7 +27,8 @@ var urlDatabase = {
 };
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  let templateVars = { username: req.cookies["username"]};
+  res.render("urls_new", templateVars);
 });
 
 const bodyParser = require("body-parser");
@@ -41,9 +42,10 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase };
+  let templateVars = { urls: urlDatabase, username: req.cookies["username"]};
   res.render("urls_index", templateVars);
 });
+
 
 app.post("/urls/:id/delete", function (req, res) {
   var shorterUrl = req.params.id;
@@ -64,7 +66,11 @@ app.get("/urls.json", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { shorterUrl: req.params.id, longerUrl: urlDatabase[req.params.id] };
+  let templateVars = {
+    shorterUrl: req.params.id,
+    longerUrl: urlDatabase[req.params.id],
+    username: req.cookies["username"]
+  };
   res.render("urls_show", templateVars);
 });
 
