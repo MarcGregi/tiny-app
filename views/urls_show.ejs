@@ -8,22 +8,17 @@
 
     <% include ./partials/_header %>
 
-
     <h1 style="color:blue;text-align:center">Grab Your Short Link Here:</h1>
     <p><strong>Short Url-></strong><%= shorterUrl %></p>
 
-
-  <form method="POST" action="/urls/<%= shorterUrl %>">
-  <fieldset>
+    <form method="POST" action="/urls/<%= shorterUrl %>">
+    <fieldset>
     <legend>Update Url:</legend>
     <br>
     <input type="text" name="updatelongerUrl" value="<%= longerUrl %>"><br><br>
     <button type="submit">Update</button>
-  </fieldset>
-</form>
-
-
-
+    </fieldset>
+    </form>
 
 </body>
 </html>
