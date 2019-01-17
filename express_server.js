@@ -59,7 +59,9 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase, username: req.cookies["username"]};
+  user = userDatabase[req.cookies.user]
+
+  let templateVars = { urls: urlDatabase, user: user  };
   res.render("urls_index", templateVars);
 });
 
@@ -86,7 +88,7 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shorterUrl: req.params.id,
     longerUrl: urlDatabase[req.params.id],
-    username: req.cookies["username"]
+    user: req.cookies["user"]
   };
   res.render("urls_show", templateVars);
 });
@@ -96,20 +98,29 @@ app.post("/urls/:id", (req, res) => {
 });
 
 app.post("/login", function(req, res){
-  res.cookie("username", req.body.username);
+  let username = req.body.username;
+  for (let user in userDatabase){
+    if (userDatabase[user].email === username){
+    user_id = userDatabase[user].id
+
+    }
+  }
+  console.log("users: ", user_id, username);
+  res.cookie("user", user_id);
   res.redirect("/urls");
 });
+
 
 app.post("/logout", function(req, res) {
-  res.clearCookie("username");
+  res.clearCookie("user");
   res.redirect("/urls");
 });
 
-// http get for register page
-app.get("/register", (req, res) => {
-res.render("urls_register");
-})
 
+app.get('/register', (req, res) => {
+
+res.render('urls_register');
+});
 
 // creating a registration handler
 app.post('/register', (req, res) => {
@@ -118,14 +129,14 @@ app.post('/register', (req, res) => {
   let newUserEmail = req.body.email;
   let newUserPassword = req.body.password;
 
-  if (newUserID === '' || newUserEmail === '') {
+  if (newUserEmail === '' || newUserPassword === '') {
     res.status(400).send("You have not filled in forms correctly");
     return;
   }
 
   for (let user in userDatabase){
     if (userDatabase[user].email === newUserEmail){
-      res.status(400).send("You are already already registered");
+      res.status(400).send("You are already registered");
       return;
     }
   }
