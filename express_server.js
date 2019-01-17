@@ -16,24 +16,28 @@ const express = require("express");
 const app = express();
 const cookieParser = require('cookie-parser');
 const PORT = 8080; // default port 8080
-
+app.use(express.static('public'));
 app.use(cookieParser());
 
 app.set("view engine", "ejs");
 
-const users = {
-  "userRandomID": {
-    id: "userRandomID",
-    email: "user@example.com",
+
+// user registration database
+var userDatabase = {
+
+  "1": {
+    id: "1",
+    email: "user1@gmail.com",
     password: "purple-monkey-dinosaur"
   },
- "user2RandomID": {
-    id: "user2RandomID",
-    email: "user2@example.com",
+ "2": {
+    id: "2",
+    email: "user2@gmail.com",
     password: "dishwasher-funk"
   }
 };
 
+// url database
 var urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
@@ -106,9 +110,38 @@ app.get("/register", (req, res) => {
 res.render("urls_register");
 })
 
-// post from Register Page
-app.post("/register", (req, res) => {
 
+// creating a registration handler
+app.post('/register', (req, res) => {
+
+  let newUserID = generateRandomString();
+  let newUserEmail = req.body.email;
+  let newUserPassword = req.body.password;
+
+  if (newUserID === '' || newUserEmail === '') {
+    res.status(400).send("You have not filled in forms correctly");
+    return;
+  }
+
+  for (let user in userDatabase){
+    if (userDatabase[user].email === newUserEmail){
+      res.status(400).send("You are already already registered");
+      return;
+    }
+  }
+
+  userDatabase[newUserID] = { id: '' ,
+   email: '',
+   password: ''};
+
+  userDatabase[newUserID].id = newUserID;
+  userDatabase[newUserID].email = newUserEmail;
+  userDatabase[newUserID].password = newUserPassword;
+
+  console.log(userDatabase);
+
+  res.cookie('user_id', newUserID);
+  res.redirect('/urls');
 
 });
 
