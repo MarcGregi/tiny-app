@@ -15,7 +15,7 @@ generateRandomString();
 const express = require("express");
 const app = express();
 const cookieParser = require('cookie-parser');
-const PORT = 8080; // default port 8080
+const PORT = 3001; // default port 8080
 // app.use(express.static(__dirname + '/public/'));
 app.use(cookieParser());
 
@@ -44,6 +44,12 @@ var urlDatabase = {
 };
 
 app.get("/urls/new", (req, res) => {
+
+  if (request.cookies.user_id === undefined){
+    response.redirect('/register');
+    return;
+  }
+
   let templateVars = { username: req.cookies["username"]};
   res.render("urls_new", templateVars);
 });
@@ -51,7 +57,7 @@ app.get("/urls/new", (req, res) => {
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
-
+// functionality that creates a new small link for the long link.
 app.post("/urls", (req, res) => {
   let newShorterUrl = generateRandomString();
   urlDatabase[newShorterUrl] = req.body.longURL;
@@ -59,7 +65,7 @@ app.post("/urls", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  user = userDatabase[req.cookies.user]
+  user = userDatabase[req.cookies.user_id]
 
   let templateVars = { urls: urlDatabase, user: user  };
   res.render("urls_index", templateVars);
@@ -85,6 +91,8 @@ app.get("/urls.json", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
+
+
   let templateVars = {
     shorterUrl: req.params.id,
     longerUrl: urlDatabase[req.params.id],
@@ -97,49 +105,65 @@ app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id] = req.body.updatelongerUrl;
 });
 
+// Get function for the login page
 app.get('/login', (req, res) => {
 
-  let pageV = {
+  let templateVars = {
     urls: urlDatabase,
     user: userDatabase[req.cookies.user_id]
     };
-
-  res.render('urls_login', pageV);
+  res.render('urls_login', templateVars);
 });
 
+// Login page functionality. Checking user email & password against the database
+app.post('/login', function(req, res) {
 
-app.post("/login", function(req, res){
-  let username = req.body.username;
   for (let user in userDatabase){
-    if (userDatabase[user].email === username){
-    user_id = userDatabase[user].id
+      // console.log(userDatabase[user]);
+      // console.log(req.body);
+    if (userDatabase[user].email === req.body.username) {
 
+      if (userDatabase[user].password === req.body.password) {
+        res.cookie('user_id', userDatabase[user].id);
+        res.redirect('/urls');
+        return;
+      } else {
+        res.status(403).send("You have entered the wrong Password.");
+        return;
+      }
     }
   }
-  res.cookie("user", user_id);
-  res.redirect("/urls");
+        return (res.status(403).send("Incorrect User."));
 });
 
 
 app.post("/logout", function(req, res) {
-  res.clearCookie("user");
+  res.clearCookie("user_id");
   res.redirect("/urls");
 });
 
 
 app.get('/register', (req, res) => {
 
-res.render('urls_register');
+  let templateVars = {
+    urls: urlDatabase,
+    user: userDatabase[req.cookies.user_id]
+    };
+
+res.render('urls_register', templateVars);
 });
 
-// creating a registration handler
+// Register page functionality. Creating new users email & password in the database
 app.post('/register', (req, res) => {
+
 
   let newUserID = generateRandomString();
   let newUserEmail = req.body.email;
   let newUserPassword = req.body.password;
 
-  if (newUserEmail === '' || newUserPassword === '') {
+
+
+  if (newUserEmail === null || newUserPassword === null) {
     res.status(400).send("You have not filled in forms correctly");
     return;
   }
@@ -151,19 +175,17 @@ app.post('/register', (req, res) => {
     }
   }
 
-  userDatabase[newUserID] = { id: '' ,
-   email: '',
-   password: ''};
+    userDatabase[newUserID] = { id: '' ,
+      email: '',
+      password: ''};
 
   userDatabase[newUserID].id = newUserID;
   userDatabase[newUserID].email = newUserEmail;
   userDatabase[newUserID].password = newUserPassword;
 
   console.log(userDatabase);
-
   res.cookie('user_id', newUserID);
   res.redirect('/urls');
-
 });
 
 app.listen(PORT, () => {
