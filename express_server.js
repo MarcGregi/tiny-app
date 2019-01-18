@@ -16,7 +16,7 @@ const express = require("express");
 const app = express();
 const cookieParser = require('cookie-parser');
 const PORT = 8080; // default port 8080
-app.use(express.static('public'));
+// app.use(express.static(__dirname + '/public/'));
 app.use(cookieParser());
 
 app.set("view engine", "ejs");
@@ -97,6 +97,17 @@ app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id] = req.body.updatelongerUrl;
 });
 
+app.get('/login', (req, res) => {
+
+  let pageV = {
+    urls: urlDatabase,
+    user: userDatabase[req.cookies.user_id]
+    };
+
+  res.render('urls_login', pageV);
+});
+
+
 app.post("/login", function(req, res){
   let username = req.body.username;
   for (let user in userDatabase){
@@ -105,7 +116,6 @@ app.post("/login", function(req, res){
 
     }
   }
-  console.log("users: ", user_id, username);
   res.cookie("user", user_id);
   res.redirect("/urls");
 });
