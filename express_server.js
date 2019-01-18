@@ -45,12 +45,8 @@ var urlDatabase = {
 
 app.get("/urls/new", (req, res) => {
 
-  if (request.cookies.user_id === undefined){
-    response.redirect('/register');
-    return;
-  }
 
-  let templateVars = { username: req.cookies["username"]};
+  let templateVars = { username: req.cookies["user_id"]};
   res.render("urls_new", templateVars);
 });
 
@@ -71,6 +67,10 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+app.get("/u/shorterUrl", (req, res) => {
+   let longerUrl = urlDatabase[req.params.shorterUrl];
+  res.redirect(longerUrl);
+});
 
 app.post("/urls/:id/delete", function (req, res) {
   var shorterUrl = req.params.id;
@@ -96,7 +96,7 @@ app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shorterUrl: req.params.id,
     longerUrl: urlDatabase[req.params.id],
-    user: req.cookies["user"]
+    user: req.cookies["user_id"]
   };
   res.render("urls_show", templateVars);
 });
