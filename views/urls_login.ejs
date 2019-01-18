@@ -4,12 +4,8 @@
     <% include ./partials/_header %>
 
 
-    <% if (typeof(user) !== "undefined" && user) { %>
-     <h1><%= user['email'] %></h1>
-    <form method="POST" action="/logout">
-    <button type="submit">Log out</button>
-    </form>
-    <%} else {%>
+
+
     <form method="POST" action="/login" style="margin:150px;">
     <div class="container">
     <label for="username"><b>Username</b></label>
@@ -18,7 +14,7 @@
     <button type="submit">Login</button>
     </div>
     </form>
-    <% } %>
+
 
 </body>
 </html>

@@ -9,8 +9,14 @@
 
   <% include ./partials/_header %>
 
-
+<% if (typeof(user) !== "undefined" && user) { %>
+     <h1><%= user['email'] %></h1>
+    <form method="POST" action="/logout">
+    <button type="submit">Log out</button>
+    </form>
   <ul>
+
+    <% } %>
 
    <% for (var shorterUrl in urls) { %>
 
