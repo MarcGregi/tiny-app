@@ -10,9 +10,9 @@
   <% include ./partials/_header %>
 
 <% if (typeof(user) !== "undefined" && user) { %>
-     <h1 style="color:#D61A46;text-align:center;font-family:verdana;"><%= user['email'] %></h1>
+     <h3 style="color:#D61A46;text-align:center;font-family:verdana;"><%= user['email'] %></h3>
     <form method="POST" action="/logout">
-    <button type="submit" style="text-align:center;">Log out</button>
+    <button type="submit" style="font-size:15px; padding:10px;">Log out</button>
     </form>
   <ul>
 
