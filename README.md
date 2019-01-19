@@ -4,8 +4,8 @@ Tiny-app is a full stack web application built with Node and Express that allows
 
 ## Final Product
 
-!["Tiny-app homepage"](#)
-!["Tiny-app register"](#)
+!["Tiny-app grab new tiny url"](https://github.com/MarcGregi/tiny-app/blob/master/docs/urls-new.png?raw=true)
+!["Tiny-app login"](https://github.com/MarcGregi/tiny-app/blob/master/docs/urls-login.png?raw=true)
 
 ## Dependencies
 
