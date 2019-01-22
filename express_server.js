@@ -1,4 +1,3 @@
-
 // function to generate random 6 digit short url
 function generateRandomString() {
 let totalCharcters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -20,11 +19,12 @@ const PORT = 3001; // default port 8080
 const bcrypt = require('bcrypt');
 app.use(cookieParser());
 
+
 app.set("view engine", "ejs");
 
 // (core function that returns specific user id short urls)
 function forUsersOnlyUrl (id) {
-  var SearchUrlDatabase = {};
+  const SearchUrlDatabase = {};
     for (let newShorterUrl in urlDatabase) {
       if (urlDatabase[newShorterUrl].id === id) {
         SearchUrlDatabase = urlDatabase[newShorterUrl];
@@ -35,7 +35,7 @@ function forUsersOnlyUrl (id) {
 
 
 // (user registration database)
-var userDatabase = {
+const userDatabase = {
 
   "1": {
     id: "1",
@@ -50,7 +50,7 @@ var userDatabase = {
 };
 
 // (url database)
-var urlDatabase = {
+const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
@@ -95,7 +95,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-app.get("/u/:shorterUrl", (req, res) => {
+app.get("/urls/u/:shorterUrl", (req, res) => {
 
     // (if no user is detected - redirect to register page)
     if (req.cookies.user_id === undefined){
@@ -103,14 +103,14 @@ app.get("/u/:shorterUrl", (req, res) => {
       return;
   }
 
-  let longerUrl = urlDatabase[request.params.shorterUrl];
+  let longerUrl = urlDatabase[req.params.shorterUrl];
   res.redirect(longerUrl);
 });
 
 app.post("/urls/:id/delete", function (req, res) {
-  var shorterUrl = req.params.id;
-  delete urlDatabase[shorterUrl];
-  res.redirect('/urls');
+  const shorterUrl = req.params.id;
+    delete urlDatabase[shorterUrl];
+      res.redirect('/urls');
 });
 
 app.get("/", (req, res) => {
@@ -229,7 +229,7 @@ app.post('/register', (req, res) => {
 
   userDatabase[newUserID].password = NewHashedUserPassword
 
-  console.log("This should be the new hashed password ", NewHashedUserPassword);
+
   res.cookie('user_id', newUserID);
   res.redirect('/urls');
 });
@@ -238,6 +238,5 @@ app.post('/register', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
-
 
 
