@@ -8,17 +8,16 @@
 
     <% include ./partials/_header %>
 
-    <h1 style="color:#D61A46;text-align:center">Grab Your Short Link Here:</h1>
-    <p><strong>Short Url-></strong><%= shorterUrl %></p>
+    <h1 style="color:#FFFFFF;text-align:center">Grab Your Short Link Here:</h1>
+        <p style="color:#FFFFFF;text-align:center;font-family:verdana;"><strong>Short Url-></strong><%= shorterUrl %></p>
 
-    <form method="POST" action="/urls/<%= shorterUrl %>">
-    <fieldset>
-    <legend>Update Url:</legend>
-    <br>
-    <input type="text" name="updatelongerUrl" value="<%= longerUrl %>"><br><br>
-    <button type="submit">Update</button>
-    </fieldset>
-    </form>
-
+    <form method="POST" action="/urls/<%= shorterUrl %>" style="color:#FFFFFF;text-align:center;">
+        <fieldset>
+            <legend style="color:#FFFFFF;text-align:center;font-family:verdana;">Update Url:</legend>
+            <br>
+                <input type="text" name="updatelongerUrl" value="<%= longerUrl %>"><br><br>
+                    <button type="submit">Update</button>
+                        </fieldset>
+                          </form>
 </body>
 </html>
