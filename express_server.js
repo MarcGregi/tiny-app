@@ -75,9 +75,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.post("/urls", (req, res) => {
 
 
-  let newShorterUrl = generateRandomString();
-  urlDatabase[newShorterUrl] = req.body.longURL;
-  res.redirect(`urls/${newShorterUrl}`);
+  let shorterUrl = generateRandomString();
+  urlDatabase[shorterUrl] = req.body.longURL;
+  res.redirect(`urls/${shorterUrl}`);
 
 });
 
@@ -91,17 +91,11 @@ app.get("/urls", (req, res) => {
 
   user = userDatabase[req.cookies.user_id]
 
-  let templateVars = { urls: forUsersOnlyUrl(req.cookies.user_id), user: user  };
+  let templateVars = { urls: forUsersOnlyUrl(req.cookies.user_id), user: user };
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/u/:shorterUrl", (req, res) => {
-
-    // (if no user is detected - redirect to register page)
-    if (req.cookies.user_id === undefined){
-    res.redirect('/register');
-      return;
-  }
 
   let longerUrl = urlDatabase[req.params.shorterUrl];
   res.redirect(longerUrl);
